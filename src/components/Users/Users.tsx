@@ -1,19 +1,49 @@
-import { useSelector } from "react-redux"
 
-export function Users() {
-    const users = useSelector((state) => state.users)
+import { useDispatch, useSelector } from "react-redux"
+import { usersActions } from '../../redux/features/users'
+import { useEffect, useState } from 'react'
+
+// type User = {
+//     id: string,
+//     name: string,
+//     status: string,
+// }
+
+export function Users({connection}: any) {
+    const [hub, setHub ] = useState()
+    const users = useSelector((state: any) => state.users.users)
+    const dispatch = useDispatch()
+   
+    function selectUser(userId: string, userName: string) {
+        dispatch(usersActions.clearMessages()) 
+        dispatch(usersActions.selectUser({userId, userName})) 
+    }
+
+    useEffect(() => {
+        async function fetchData() {
+             let res = await connection
+            setHub(res);
+
+            // console.log(users);
+            
+         }
+         fetchData()
+     }, [connection])
+    
     return (
-        <div className="wrap">
-            <h1>Список пользователей</h1>  
+        <div className="wrap max">
+            <h1 className="center">Список пользователей</h1>  
             <ul>  
-                
-                {/* {users ? users.map((user: any, index: number) => {
+                {users ? Object.values(users).map((user: any, index: number) => {
                     if (index < 10) {
-                        return <li key={user.id} onClick={function empty() {}}>{user.id}</li>
+                        return <div key={user.id}  className="flex-horizontal space-between">
+                            <li onClick={ () => selectUser(user.id, user.name) }>{user.name}</li>
+                            <span className="status">{user.status}</span>
+                        </div> 
                     }
-                }) : 'Нет активных пользователей'}    */}
-               
+                }) : 'Нет активных пользователей'}  
             </ul>
         </div>
     )
 }
+//

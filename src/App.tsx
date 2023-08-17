@@ -15,8 +15,8 @@ function App() {
 
   const initConnection = async () => {
     const token = 'nh1nF2RLVakVSDQcVeGmOeU5vcMKOKN2ODzO737oKrT0vfsxlPMzWg2l4LSh';
-      // const userId = crypto.randomUUID();
-      const userId = '9c24bdf6-cd44-4883-aecc-66d83456144c'
+      const userId = crypto.randomUUID();
+      // const userId = '9c24bdf6-cd44-4883-aecc-66d83456144c'
       const hubConnection = new HubConnectionBuilder()
          .withUrl(`https://vac.astrapage.ru/hubs/chat/?user_id=${userId}`, {
           logger: LogLevel.Trace,
@@ -40,7 +40,7 @@ function App() {
     hubConnection.on('Connected', (data) => {
     
       console.log('Connected', data);
-      console.log('users Connected', users);
+      console.log('users Connected', usersState);
        // @ts-ignore
       let found = Object.values(usersState).find(user => user.id === data.id);
       console.log('found Connected', found);
@@ -50,7 +50,7 @@ function App() {
 
     hubConnection.on('Disconnected', (data) => {
     
-      console.log('users Disconnected', users);
+      console.log('users Disconnected', usersState);
 
       // @ts-ignore
       let found = Object.values(usersState).find(user => user.id === data.id);
@@ -85,7 +85,7 @@ function App() {
       
    
        setUsers(response);
-       dispatch(usersActions.addUsers(response))  
+      //  dispatch(usersActions.addUsers(response))  
       
     }
     

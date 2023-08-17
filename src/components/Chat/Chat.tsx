@@ -30,6 +30,11 @@ export function Chat({connection}: any) {
 
     async function sendMessage(message: string) {
        setValue('')
+       hub?.on('MessageReceived', (data) => {
+     
+        console.log('MessageReceived', data);
+       
+      })
        
        let result = await hub?.invoke('SendMessage', { "to": userId.userId, "text": message})
        if (result.ok) {
